@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>insert</title>
+</head>
+
+<body>
+    <h1>Insert Items in Inventory</h1>
+    <form method="POST" action="/index/product_insert">
+        <input type="text" name="itemid" placeholder="Item ID" id="iid">
+        <input type="text" name="name" placeholder="Item Name" id="iname">
+        <input type="text" name="qty" placeholder="Quantity">
+        <input type="text" name="price" placeholder="Price per ITEM">
+        <input type="submit" value="Insert">
+        <input type="submit" value="Delete" formaction="/index/product_delete">
+        <input type="submit" value="Update" formaction="/index/product_update">
+        <input type="submit" value="Search" formaction="/index/product_search">
+    </form>
+</body>
+<script src="../route/index-mongo.js"></script>
+</html>
