@@ -9,6 +9,7 @@ app.use(express.urlencoded({"extended":false}));
 var insert_products=require("./route/warehouse-insert-inventory");
 app.use("/index",insert_products);
 
+
 app.use(express.static("pages"));       //imp line for .html
 
 app.use("/",(req,res)=>{

@@ -27,6 +27,14 @@ var nameSchema = new mongoose.Schema({
 nameSchema.set('versionKey',false);
 
 var productCol = mongoose.model("products", nameSchema);    //collection
+
+//auth
+app.post("/auth",(req,res)=>{
+    if(req.body.uname == "abc" && req.body.upwd=="abc")
+            res.redirect("/warehouse.html");
+    else 
+    console.log("wrong pwd");
+});
    
 //insert the product in collection
 app.post("/product_insert",(req,res)=>{
@@ -35,7 +43,7 @@ app.post("/product_insert",(req,res)=>{
     myData.save()
     .then(item => {
     //res.send({success:true,data:item});
-      res.redirect("/");
+      res.redirect("/warehouse.html");
     })
     .catch(err => {
     res.status(400).send("unable to save to database");
@@ -79,6 +87,16 @@ app.post("/product_search",function(req,res){
         res.send(result);
     })
     .catch(function(msg){res.send({err:msg});});
+});
+
+//show all the products from inventory
+app.get("/showproduct",(req,res)=>{
+    productCol.find()
+    .then(function(result)
+    {
+         res.json(result);
+    })
+    .catch(function(msg){res.json({err:msg});});
 });
 
 module.exports=app;
