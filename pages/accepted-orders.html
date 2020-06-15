@@ -29,6 +29,7 @@
 </head>
 <body  ng-app="mymodule" ng-controller="mycontroller">
     <center>
+        <h1>order status of shop</h1>
     <input type="text" id="shopid" placeholder="shop id">
     <input type="date" id="selDate">
     <input type="button" id="fetch" value="show all accepted orders" ng-click="placedOrders();"></center>
@@ -38,10 +39,12 @@
         <tr>
             <th scope="col">Product Id</th>
             <th scope="col">Quantity</th>
+            <th scope="col">status</th>
         </tr>
         <tr ng-repeat="obj in jsonArry">
             <td scope="row">{{obj.productid}}</td>
             <td scope="row">{{obj.quantity}}</td>
+            <td scope="row">{{obj.status}}</td>
         </tr>
     </thead>
  </table>

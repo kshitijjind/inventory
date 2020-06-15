@@ -30,7 +30,8 @@ var nameSchema = new mongoose.Schema({
     productid:String,
     quantity:Number,
     Date:String,
-    status:Number
+    status:Number,
+    acceptedquantity:Number
 });
 
 nameSchema.set('versionKey',false);
@@ -41,6 +42,7 @@ var orderCol = mongoose.model("orders", nameSchema);    //collection
 app.post("/placeOrder",(req,res)=>{
     req.body["Date"]=date;
     req.body["status"]=0;
+    req.body["acceptedquantity"]=null
     console.log(req.body);
     var orderData = new orderCol(req.body);
     orderData.save()
@@ -68,7 +70,7 @@ app.get("/placedOrder",(req,res)=>{
 //accept the particular order status =1
 app.get("/acceptOrder",(req,res)=>{
     console.log(req.query.orderUid);
-    orderCol.findOneAndUpdate({_id: req.query.orderUid},{$set:{status:1}},{new:true}) .then((docs)=>
+    orderCol.findOneAndUpdate({_id: req.query.orderUid},{$set:{status:1,acceptedquantity:req.query.quantity}},{new:true}) .then((docs)=>
     {
         if(docs) {
             alert("order accepted");
@@ -80,11 +82,11 @@ app.get("/acceptOrder",(req,res)=>{
     }) 
 });
 
-//accepted orders 
+// orders  status
 app.get("/acceptedOrders",(req,res)=>{
     console.log(req.query.currentDate);
     console.log(req.query.shopId);
-    orderCol.find({ $and: [ { shopid: req.query.shopId}, { Date: req.query.currentDate} ,{status:1} ] })
+    orderCol.find({ $and: [ { shopid: req.query.shopId}, { Date: req.query.currentDate}] })
     .then(function(result)
     {
         console.log(result);
@@ -93,4 +95,32 @@ app.get("/acceptedOrders",(req,res)=>{
     .catch(function(msg){res.json({err:msg});}); 
 });
 
+//Reject orders 
+//accept the particular order status =1
+app.get("/cancelOrder",(req,res)=>{
+    console.log(req.query.orderUid);
+    orderCol.findOneAndUpdate({_id: req.query.orderUid},{$set:{status:2,acceptedquantity:0}},{new:true}) .then((docs)=>
+    {
+        if(docs) {
+            resp.send({success:true,data:docs});
+        } else
+         {
+            resp.send({success:false,data:"no such user exist"});
+        }
+    }) 
+});
+
+app.get("/partialOrder",(req,res)=>{
+    console.log(req.query.orderUid);
+  console.log(req.query.quantity);
+    orderCol.findOneAndUpdate({_id: req.query.orderUid},{$set:{status:3,acceptedquantity:req.query.quantity}},{new:true}) .then((docs)=>
+    {
+        if(docs) {
+            resp.send({success:true,data:docs});
+        } else
+         {
+            resp.send({success:false,data:"no such user exist"});
+        }
+    }) 
+ });
 module.exports=app;

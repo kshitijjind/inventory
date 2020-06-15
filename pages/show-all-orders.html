@@ -23,9 +23,31 @@
                 }
             }
 
-            $scope.acceptOrder = function(uid){
+            $scope.acceptOrder = function(uid,qyt){
                 alert(uid);
-                $http.get("/order/acceptOrder?orderUid="+uid).then(onResult, onFail);
+                $http.get("/order/acceptOrder?orderUid="+uid+"&quantity="+qyt).then(onResult, onFail);
+                function onResult(res) {
+                    alert(res);
+                }
+                function onFail(res) {
+                    alert(res.data);
+                }
+            }
+
+            $scope.cancelOrder = function(uid){
+                alert(uid);
+                $http.get("/order/cancelOrder?orderUid="+uid).then(onResult, onFail);
+                function onResult(res) {
+                    alert(res);
+                }
+                function onFail(res) {
+                    alert(res.data);
+                }
+            }
+
+            $scope.partial = function(uid,qty){
+                alert(qty);
+                $http.get("/order/partialOrder?orderUid="+uid+"&quantity="+qty).then(onResult, onFail);
                 function onResult(res) {
                     alert(res);
                 }
@@ -39,6 +61,7 @@
 </head>
 <body  ng-app="mymodule" ng-controller="mycontroller">
     <center>
+        <h1>show order receive to inventory</h1>
     <input type="date" id="selDate">
     <input type="button" id="fetch" value="show all products" ng-click="placedOrders();"></center>
 <div class="container bg-white mt-5">
@@ -49,14 +72,23 @@
             <th scope="col">Shop Name</th>
             <th scope="col">Product Id</th>
             <th scope="col">Quantity</th>
+            <th scope="col">Status</th>
             <th scope="col">Accept order</th>
+            <th scope="col">Cancel order</th>
+            <th scope="col">Partial order</th>
         </tr>
         <tr ng-repeat="obj in jsonArry">                                    
             <td scope="row">{{obj.shopid}}</td>
             <td scope="row">{{obj.shopname}}</td>
             <td scope="row">{{obj.productid}}</td>
             <td scope="row">{{obj.quantity}}</td>
-            <td scope="row"><div class="btn btn-info" ng-click="acceptOrder(obj._id);">Dispatch</div></td>
+            <td scope="row">{{obj.status}}</td>
+            <td scope="row"><div class="btn btn-info" ng-click="acceptOrder(obj._id,obj.quantity);">Dispatch</div></td>
+            <td scope="row"><div class="btn btn-danger" ng-click="cancelOrder(obj._id);">Cancel</div></td>
+            <td scope="row">
+                <input type="text" placeholder="quanity"  ng-model="qt">
+                <div class="btn btn-primary" ng-click="partial(obj._id,qt);">Partial Accept</div>
+            </td>
         </tr>
     </thead>
  </table>
