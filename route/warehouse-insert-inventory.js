@@ -39,8 +39,8 @@ app.post("/auth",(req,res)=>{
 //insert the product in collection
 app.post("/product_insert",(req,res)=>{
     console.log(req.body);
-    var myData = new productCol(req.body);
-    myData.save()
+    var proData = new productCol(req.body);
+    proData.save()
     .then(item => {
     //res.send({success:true,data:item});
       res.redirect("/warehouse.html");
