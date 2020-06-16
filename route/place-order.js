@@ -31,7 +31,9 @@ var nameSchema = new mongoose.Schema({
     quantity:Number,
     Date:String,
     status:Number,
-    acceptedquantity:Number
+    acceptedquantity:Number,
+    shoporderstatus:Number,
+    shopacceptedquantity:Number
 });
 
 nameSchema.set('versionKey',false);
@@ -42,7 +44,9 @@ var orderCol = mongoose.model("orders", nameSchema);    //collection
 app.post("/placeOrder",(req,res)=>{
     req.body["Date"]=date;
     req.body["status"]=0;
-    req.body["acceptedquantity"]=null
+    req.body["acceptedquantity"]=null;
+    req.body["shoporderstatus"]=null;
+    req.body["shopacceptedquantity"]=null;
     console.log(req.body);
     var orderData = new orderCol(req.body);
     orderData.save()
@@ -86,7 +90,7 @@ app.get("/acceptOrder",(req,res)=>{
 app.get("/acceptedOrders",(req,res)=>{
     console.log(req.query.currentDate);
     console.log(req.query.shopId);
-    orderCol.find({ $and: [ { shopid: req.query.shopId}, { Date: req.query.currentDate}] })
+    orderCol.find({ $and: [ {$or: [{status: 1},{status:3}]},{ shopid: req.query.shopId}, { Date: req.query.currentDate} ] })
     .then(function(result)
     {
         console.log(result);
@@ -110,6 +114,7 @@ app.get("/cancelOrder",(req,res)=>{
     }) 
 });
 
+//partial accepte by inventory
 app.get("/partialOrder",(req,res)=>{
     console.log(req.query.orderUid);
   console.log(req.query.quantity);
@@ -123,4 +128,62 @@ app.get("/partialOrder",(req,res)=>{
         }
     }) 
  });
+
+ //accept the order from shop
+ app.get("/shopAcceptOrder",(req,res)=>{
+    console.log(req.query.orderUid);
+    orderCol.findOneAndUpdate({_id: req.query.orderUid},{$set:{shoporderstatus:1,shopacceptedquantity:req.query.quantity}},{new:true}) .then((docs)=>
+    {
+        if(docs) {
+            alert("order accepted");
+            resp.send({success:true,data:docs});
+        } else
+         {
+            resp.send({success:false,data:"no such user exist"});
+        }
+    }) 
+});
+
+//shopkepper Reject orders  shoporderstatus:2
+app.get("/shopCancelOrder",(req,res)=>{
+    console.log(req.query.orderUid);
+    orderCol.findOneAndUpdate({_id: req.query.orderUid},{$set:{shoporderstatus:2,shopacceptedquantity:0}},{new:true}) .then((docs)=>
+    {
+        if(docs) {
+            resp.send({success:true,data:docs});
+        } else
+         {
+            resp.send({success:false,data:"no such user exist"});
+        }
+    }) 
+});
+
+//partial accepte by shopkepper
+app.get("/shopAcceptPartial",(req,res)=>{
+    console.log(req.query.orderUid);
+  console.log(req.query.quantity);
+    orderCol.findOneAndUpdate({_id: req.query.orderUid},{$set:{shoporderstatus:3,shopacceptedquantity:req.query.quantity}},{new:true}) .then((docs)=>
+    {
+        if(docs) {
+            resp.send({success:true,data:docs});
+        } else
+         {
+            resp.send({success:false,data:"no such user exist"});
+        }
+    }) 
+ });
+
+
+ //show all products in others shops
+app.get("/showProductOtherShop",(req,res)=>{
+    console.log(req.query.shopId);
+    orderCol.find({shopid: {$ne:req.query.shopId}})
+    .then(function(result)
+    {
+        console.log(result);
+        res.json(result);
+    })
+    .catch(function(msg){res.json({err:msg});});
+});
+ 
 module.exports=app;
