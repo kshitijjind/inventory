@@ -41,6 +41,17 @@
                     function onFail(res) {
                         alert(res.data);
                     }
+                    $http.get("/index/updateQuantity?productUid=" + itemid + "&quantity=" + qty).then(
+                        onResult, onFail);
+
+                    function onResult(res) {
+                        alert(res);
+                    }
+
+                    function onFail(res) {
+                        alert(res.data);
+                    }
+
 
                 } else {
                     alert("quantity excced");
@@ -83,7 +94,6 @@
             </thead>
         </table>
     </div>
-
 </body>
 
 </html>
