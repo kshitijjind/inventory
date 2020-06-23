@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrapcss.css">
+    <script src="jquery.js"></script>
+    <script src="bootstrap.js"></script>
+    <script src="angular.min.js"></script>
+
+    <script>
+        var module = angular.module("mymodule", []);
+        module.controller("mycontroller", function ($scope, $http) {
+            $scope.fetchpro = function () {
+                $http.get("index/showproduct").then(onResult, onFail);
+
+                function onResult(res) {
+                    $scope.jsonArry = res.data;
+                    $scope.x = $scope.jsonArry[1];
+                }
+
+                function onFail(res) {
+                    alert(res.data);
+                }
+            }
+
+            $scope.place = function (itemid, itemname, inventoryQty, itemprice, qty) {
+                if (inventoryQty >= qty) {
+                    alert(qty);
+                    alert(document.getElementById('shopid').value)
+                    var shopid = document.getElementById('shopid').value;
+                    $http.get("/custorder/custorderPlaceOrder?itemUid=" + itemid + "&itemName=" + itemname +
+                        "&itemPrice=" + itemprice + "&orderQty=" + qty + "&shopId=" + shopid).then(
+                        onResult, onFail);
+
+                    function onResult(res) {
+                        alert(res);
+                    }
+
+                    function onFail(res) {
+                        alert(res.data);
+                    }
+
+                } else {
+                    alert("quantity excced");
+                }
+
+            }
+
+        });
+    </script>
+
+</head>
+
+<body ng-app="mymodule" ng-controller="mycontroller">
+    <center>
+        <h1>Customer can place order</h1>
+        <input type="text" id="shopid" placeholder="shop id">
+        <input type="button" id="fetch" value="show all products" ng-click="fetchpro();">
+    </center>
+    <div class="container bg-white mt-5">
+        <table class="table table-striped table-active table-responsive-md" style="color:black">
+            <thead>
+                <tr>
+                    <th scope="col">Item id</th>
+                    <th scope="col">Item Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price/Item</th>
+                    <th scope="col">PLace Order</th>
+                </tr>
+                <tr ng-repeat="obj in jsonArry">
+                    <td scope="row">{{obj.itemid}}</td>
+                    <td scope="row">{{obj.name}}</td>
+                    <td scope="row">{{obj.qty}}</td>
+                    <td scope="row">{{obj.price}}</td>
+                    <td scope="row">
+                        <input type="text" placeholder="quanity" ng-model="qt">
+                        <div class="btn btn-primary" ng-click="place(obj.itemid,obj.name,obj.qty,obj.price,qt);">Order
+                        </div>
+                    </td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+</body>
+
+</html>

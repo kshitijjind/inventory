@@ -41,7 +41,10 @@ nameSchema.set('versionKey',false);
 var orderCol = mongoose.model("orders", nameSchema);    //collection
 
 //insert the product in collection
-app.post("/placeOrder",(req,res)=>{
+app.get("/placeOrder",(req,res)=>{
+    req.body["shopid"] = req.query.ShopId;
+    req.body["productid"] = req.query.productUid;
+    req.body["quantity"] = req.query.quantity;
     req.body["Date"]=date;
     req.body["status"]=0;
     req.body["acceptedquantity"]=null;
@@ -77,11 +80,11 @@ app.get("/acceptOrder",(req,res)=>{
     orderCol.findOneAndUpdate({_id: req.query.orderUid},{$set:{status:1,acceptedquantity:req.query.quantity}},{new:true}) .then((docs)=>
     {
         if(docs) {
-            alert("order accepted");
-            resp.send({success:true,data:docs});
+            console.log("order accepted")
+            res.send({success:true,data:docs});
         } else
          {
-            resp.send({success:false,data:"no such user exist"});
+            res.send({success:false,data:"no such user exist"});
         }
     }) 
 });
@@ -150,10 +153,10 @@ app.get("/shopCancelOrder",(req,res)=>{
     orderCol.findOneAndUpdate({_id: req.query.orderUid},{$set:{shoporderstatus:2,shopacceptedquantity:0}},{new:true}) .then((docs)=>
     {
         if(docs) {
-            resp.send({success:true,data:docs});
+            res.send({success:true,data:docs});
         } else
          {
-            resp.send({success:false,data:"no such user exist"});
+            res.send({success:false,data:"no such user exist"});
         }
     }) 
 });
@@ -178,6 +181,18 @@ app.get("/shopAcceptPartial",(req,res)=>{
 app.get("/showProductOtherShop",(req,res)=>{
     console.log(req.query.shopId);
     orderCol.find({shopid: {$ne:req.query.shopId}})
+    .then(function(result)
+    {
+        console.log(result);
+        res.json(result);
+    })
+    .catch(function(msg){res.json({err:msg});});
+});
+
+//show all products in all shops
+app.get("/showAllProductInShop",(req,res)=>{
+    console.log(req.query.shopId);
+    orderCol.find()
     .then(function(result)
     {
         console.log(result);

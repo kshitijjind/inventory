@@ -35,7 +35,7 @@
                 }
             }
 
-            $scope.shopCancelOrder = function(uid){
+            $scope.shopCancelOrder = function(uid,productid,qty){
                 alert(uid);
                 $http.get("/order/shopCancelOrder?orderUid="+uid).then(onResult, onFail);
                 function onResult(res) {
@@ -44,11 +44,27 @@
                 function onFail(res) {
                     alert(res.data);
                 }
+
+                $http.get("index/updateQuantityReject?productUid="+productid+"&quantity="+qty).then(onResult, onFail);
+                function onResult(res) {
+                    alert(res);
+                }
+                function onFail(res) {
+                    alert(res.data);
+                }
             }
 
-            $scope.shopAcceptPartial = function(uid,qty){
+            $scope.shopAcceptPartial = function(uid,qty,productid){
                 alert(qty);
                 $http.get("/order/shopAcceptPartial?orderUid="+uid+"&quantity="+qty).then(onResult, onFail);
+                function onResult(res) {
+                    alert(res);
+                }
+                function onFail(res) {
+                    alert(res.data);
+                }
+
+                $http.get("index/updateQuantityReject?productUid="+productid+"&quantity="+qty).then(onResult, onFail);
                 function onResult(res) {
                     alert(res);
                 }
@@ -85,10 +101,10 @@
             <td scope="row">{{obj.status}}</td>
             <td scope="row">{{obj.acceptedquantity}}</td>
             <td scope="row"><div class="btn btn-info" ng-click="shopAcceptOrder(obj._id,obj.acceptedquantity);">Accept</div></td>
-            <td scope="row"><div class="btn btn-danger" ng-click="shopCancelOrder(obj._id);">Reject</div></td>
+            <td scope="row"><div class="btn btn-danger" ng-click="shopCancelOrder(obj._id,obj.productid,obj.acceptedquantity);">Reject</div></td>
             <td scope="row">
                 <input type="text" placeholder="quanity"  ng-model="shopAcceptquantity">
-                <div class="btn btn-primary" ng-click="shopAcceptPartial(obj._id,shopAcceptquantity);">Partial Accept</div>
+                <div class="btn btn-primary" ng-click="shopAcceptPartial(obj._id,shopAcceptquantity,obj.productid);">Partial Accept</div>
             </td>
         </tr>
     </thead>
