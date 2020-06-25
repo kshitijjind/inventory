@@ -30,8 +30,10 @@
                     alert(qty);
                     alert(document.getElementById('shopid').value)
                     var shopid = document.getElementById('shopid').value;
+                    var mobile = document.getElementById('mobile').value;
                     $http.get("/custorder/custorderPlaceOrder?itemUid=" + itemid + "&itemName=" + itemname +
-                        "&itemPrice=" + itemprice + "&orderQty=" + qty + "&shopId=" + shopid).then(
+                        "&itemPrice=" + itemprice + "&orderQty=" + qty + "&shopId=" + shopid +
+                        "&mobile=" + mobile).then(
                         onResult, onFail);
 
                     function onResult(res) {
@@ -68,6 +70,7 @@
     <center>
         <h1>Customer can place order</h1>
         <input type="text" id="shopid" placeholder="shop id">
+        <input type="text" id="mobile" placeholder="Mobile Number">
         <input type="button" id="fetch" value="show all products" ng-click="fetchpro();">
     </center>
     <div class="container bg-white mt-5">

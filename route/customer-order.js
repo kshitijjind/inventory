@@ -1,8 +1,17 @@
 var express = require("express");
 var app = express.Router();
 
+//send msg to the customer
+const account_sid = 'xxxxxxxxxxxxxxx'
+const auth_token = 'xxxxxxxxxxxxxxxx'
+const client = require('twilio')(account_sid, auth_token)
+
+
 var mongoose = require("mongoose");
 var bodyParser = require('body-parser');
+const {
+    response
+} = require("express");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -37,11 +46,17 @@ var customerCol = mongoose.model("customerOrder", nameSchema); //collection
 
 //insert the product in collection
 app.get("/custorderPlaceOrder", (req, res) => {
+    let bill = req.query.orderQty * req.query.itemPrice;
+    client.messages.create({
+        to: "+" + req.query.mobile,
+        from: '+12083699650',
+        body: `You have sucessfully place your order and your bill is ${bill}`
+    }).then((message) => console.log(message));
+
     req.body['shopid'] = req.query.shopId;
     req.body['itemid'] = req.query.itemUid;
     req.body['itemname'] = req.query.itemName;
     req.body['quantity'] = req.query.orderQty;
-    let bill = req.query.orderQty * req.query.itemPrice;
     req.body['totalbill'] = bill;
     var custOrderData = new customerCol(req.body);
     custOrderData.save()

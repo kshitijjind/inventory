@@ -15,11 +15,15 @@
     "date-and-time": "^0.13.1",
     "ejs": "^3.1.3",
     "express": "^4.17.1",
+    "fast-two-sms": "^2.1.0",
     "fs": "0.0.1-security",
     "mongoose": "^5.9.18",
+    "nexmo": "^2.7.0",
     "nodemon": "^2.0.4",
     "path": "^0.12.7",
     "qrcode": "^1.4.4",
-    "stripe": "^8.64.0"
+    "socket.io": "^2.3.0",
+    "stripe": "^8.64.0",
+    "twilio": "^3.46.0"
   }
 }
