@@ -2,8 +2,8 @@ var express = require("express");
 var app = express.Router();
 
 //send msg to the customer
-const account_sid = 'xxxxxxxxxxxxxxx'
-const auth_token = 'xxxxxxxxxxxxxxxx'
+const account_sid = 'ACf29c42f59595ed66f538e3fb4adaca2b'
+const auth_token = '4773c0b3d46639ff716ea76127791fdb'
 const client = require('twilio')(account_sid, auth_token)
 
 

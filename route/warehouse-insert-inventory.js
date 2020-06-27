@@ -2,7 +2,17 @@ var QRCode = require('qrcode');
 var express = require("express");
 var app = express.Router();
 const base64Img = require('base64-img');
+const nodemailer = require("nodemailer");
 
+//sending email from contact
+var transpoter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'xxxxxxx',
+        pass: 'xxxxxxx'
+
+    }
+});
 
 var mongoose = require("mongoose");
 var bodyParser = require('body-parser');
@@ -47,6 +57,8 @@ app.post("/auth", (req, res) => {
 
 //insert the product in collection
 app.post("/product_insert", (req, res) => {
+
+    //qr code genration
     const Qrdata = JSON.stringify(req.body);
     const path = process.cwd() + '/qrcodes/';
     const filename = `${req.body.itemid}`;
@@ -56,6 +68,18 @@ app.post("/product_insert", (req, res) => {
         base64Img.img(url, path, filename, (err, filepath) => {});
     });
     req.body.qrcodeUrl = path + filename;
+
+    //mail send to head
+    var mailOptions = {
+        from: 'xxxxxxxx',
+        to: 'xxxxxxxxxx',
+        subject: "add new product to inventory",
+        text: `${Qrdata}`
+    }
+    transpoter.sendMail(mailOptions, function (error, info) {
+        if (error) console.log(error);
+        else console.log('email sent: ' + info.response);
+    });
     var proData = new productCol(req.body);
     proData.save()
         .then(item => {
