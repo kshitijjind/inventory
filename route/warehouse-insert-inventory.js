@@ -8,8 +8,8 @@ const nodemailer = require("nodemailer");
 var transpoter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'xxxxxxx',
-        pass: 'xxxxxxx'
+        user: 'xxxxxxxxx',
+        pass: 'xxxxxxxxx'
 
     }
 });
@@ -71,8 +71,8 @@ app.post("/product_insert", (req, res) => {
 
     //mail send to head
     var mailOptions = {
-        from: 'xxxxxxxx',
-        to: 'xxxxxxxxxx',
+        from: 'xxxxxxxxxx',
+        to: 'xxxxxxxxx',
         subject: "add new product to inventory",
         text: `${Qrdata}`
     }

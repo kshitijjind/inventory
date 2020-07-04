@@ -1,4 +1,3 @@
-var QRCode = require('qrcode');
 var express = require("express");
 var path = require("path");
 var bodyparser = require("body-parser");
@@ -20,6 +19,11 @@ require('./route/payment')(app)
 var customer_orders = require("./route/customer-order");
 app.use("/custorder", customer_orders);
 
+var employee = require("./route/employee-opt");
+app.use("/emp", employee);
+
+var email = require("./route/email");
+app.use("/email", email);
 
 app.use(express.static("pages")); //imp line for .html
 

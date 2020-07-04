@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory</title>
+</head>
+
+<body>
+    <h1>Insert employee to the company</h1>
+    <form method="POST" action="/emp/insert_emp">
+        <input type="text" name="empid" placeholder="Employee Id">
+        <input type="text" name="empname" placeholder="Employee Name">
+        <input type="text" name="fathername" placeholder="Fathers Name">
+        <input type="date" name="dob">
+        <input type="text" name="email" placeholder="Employee Email">
+        <input type="text" name="empdsg" placeholder="Designation">
+        <input type="date" name="doj"><br><br>
+        <input type="text" name="supname" placeholder="Supervisor's Name">
+        <select name="dept">
+            <option value="none">select the department</option>
+            <option value="HR">HR</option>
+            <option value="Technical">Technical</option>
+            <option value="Accounts">Accounts</<option>
+            <option value="Management">Management</option>
+        </select>
+        <select name="septcode">
+            <option value="none">Select the deparment code</option>
+            <option value="101">101</option>
+            <option value="102">102</option>
+            <option value="103">103</option>
+            <option value="105">104</option>
+        </select>
+        <input type="text" name="empsalary" placeholder="Employee Salary">
+
+        <input type="submit" value="Insert">
+    </form>
+</body>
+<script src="../route/index-mongo.js"></script>
+
+</html>
