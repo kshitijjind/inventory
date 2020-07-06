@@ -25,11 +25,41 @@
             }
 
 
-            $scope.assign = function (uid, prolist, email) {
-                alert(prolist);
-                $http.get("/emp/update_pro_list?uid=" + uid + "&prolist=" + prolist + "&email=" + email)
-                    .then(onResult,
-                        onFail);
+            $scope.accept = function (uid, assestacceptrequestlist) {
+                alert(assestacceptrequestlist);
+                $http.get("/emp/accept_requestassestlist?uid=" + uid + "&assestacceptrequestlist=" +
+                    assestacceptrequestlist).then(
+                    onResult,
+                    onFail);
+
+                function onResult(res) {
+                    alert(res);
+                }
+
+                function onFail(res) {
+                    alert(res.data);
+                }
+            }
+
+            $scope.reject = function (uid) {
+                $http.get("/emp/reject_emp_requestassestlist?uid=" + uid).then(
+                    onResult,
+                    onFail);
+
+                function onResult(res) {
+                    alert(res);
+                }
+
+                function onFail(res) {
+                    alert(res.data);
+                }
+            }
+
+            $scope.partialaccept = function (uid, assestacceptrequestlist) {
+                $http.get("/emp/partialaccept_emp_assestreqest?uid=" + uid + "&assestacceptrequestlist=" +
+                    assestacceptrequestlist).then(
+                    onResult,
+                    onFail);
 
                 function onResult(res) {
                     alert(res);
@@ -58,7 +88,9 @@
                     <th scope="col">Email Id</th>
                     <th scope="col">Employee designation</th>
                     <th scope="col">DOJ</th>
-                    <th scope="col">Product list</th>
+                    <th scope="col">Assest request list</th>
+                    <th scope="col">Accept</th>
+                    <th scope="col">Reject</th>
                     <th scope="col">Assign</th>
                 </tr>
                 <tr ng-repeat="obj in jsonArry">
@@ -67,11 +99,18 @@
                     <td scope="row">{{obj.email}}</td>
                     <td scope="row">{{obj.empdsg}}</td>
                     <td scope="row">{{obj.doj}}</td>
+                    <td scope="row">{{obj.assestrequestlist}}</td>
                     <td scope="row">
-                        <input type="text" ng-model="assignpro">
+                        <div class="btn btn-primary" ng-click="accept(obj._id,obj.assestrequestlist);">Accept
+                        </div>
                     </td>
                     <td scope="row">
-                        <div class="btn btn-success" ng-click="assign(obj._id,assignpro,obj.email);">assign</div>
+                        <div class="btn btn-danger" ng-click="reject(obj._id,assignpro,obj.email);">Reject</div>
+                    </td>
+                    <td scope="row">
+                        <input type="text" ng-model="assignpro">
+                        <div class="btn btn-success" ng-click="partialaccept(obj._id,assignpro);">Partial accept
+                        </div>
                     </td>
                 </tr>
             </thead>
