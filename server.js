@@ -25,6 +25,12 @@ app.use("/emp", employee);
 var email = require("./route/email");
 app.use("/email", email);
 
+var recipt = require("./route/cash-recipt");
+app.use("/recipt", recipt);
+
+var invoice = require("./route/invoice");
+app.use("/invoice", invoice);
+
 app.use(express.static("pages")); //imp line for .html
 
 app.use("/", (req, res) => {

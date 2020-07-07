@@ -26,7 +26,7 @@
                 }
             }
 
-            $scope.place = function (uid, itemid, qty) {
+            $scope.place = function (uid, itemid, qty, payment) {
                 $http.get("/custorder/updatependingorder?orderUid=" + uid).then(
                     onResult, onFail);
 
@@ -48,6 +48,20 @@
                 function onFail(res) {
                     alert(res.data);
                 }
+
+                $http.get("/invoice/genrateinvoice?itemUid=" + itemid + "&orderQty=" + qty + "&payment=" +
+                    payment).then(
+                    onResult, onFail);
+
+                function onResult(res) {
+                    alert(res);
+                }
+
+                function onFail(res) {
+                    alert(res.data);
+                }
+
+
 
 
             }
@@ -71,8 +85,8 @@
                     <th scope="col">Item Name</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Toatal Bill</th>
-                    <th scope="col">Adv. Payment(18% Gst)</th>
                     <th scope="col">Payment Pending</th>
+                    <th scope="col">Adv. Payment(18% Gst)</th>
                     <th scope="col">Dilever Order</th>
                 </tr>
                 <tr ng-repeat="obj in jsonArry">
@@ -83,7 +97,7 @@
                     <td scope="row">{{obj.advpayment}}</td>
                     <td scope="row">{{obj.totalbill - obj.advpayment}}</td>
                     <td scope="row">
-                        <div class="btn btn-primary" ng-click="place(obj._id,obj.itemid,obj.quantity);">
+                        <div class="btn btn-primary" ng-click="place(obj._id,obj.itemid,obj.quantity,obj.totalbill);">
                             Dilever Order
                         </div>
                     </td>

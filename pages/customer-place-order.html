@@ -44,6 +44,20 @@
                         alert(res.data);
                     }
 
+                    $http.get("/recipt/generaterecipt?itemUid=" + itemid + "&itemName=" + itemname +
+                        "&itemPrice=" + itemprice + "&orderQty=" + qty + "&shopId=" + shopid +
+                        "&mobile=" + mobile + "&payment=" + pay).then(
+                        onResult, onFail);
+
+                    function onResult(res) {
+                        alert(pay);
+                        alert(res);
+                    }
+
+                    function onFail(res) {
+                        alert(res.data);
+                    }
+
 
                 } else {
                     alert("quantity excced");
