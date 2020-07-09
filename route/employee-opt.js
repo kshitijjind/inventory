@@ -49,7 +49,8 @@ var nameSchema = new mongoose.Schema({
     assestlist: String,
     assestacceptlist: String,
     assestrequestlist: String,
-    assestacceptrequestlist: String
+    assestacceptrequestlist: String,
+    assestsubmitback: String
 });
 
 nameSchema.set('versionKey', false);
@@ -64,6 +65,7 @@ app.post("/insert_emp", (req, res) => {
     req.body['assestlist'] = null;
     req.body['assestacceptlist'] = null;
     req.body['assestrequestlist'] = null;
+    req.body['assestsubmitback'] = null;
     var empData = new empCol(req.body);
 
     empData.save()
@@ -74,6 +76,71 @@ app.post("/insert_emp", (req, res) => {
         .catch(err => {
             res.status(400).send("unable to save to database");
         });
+});
+
+//delete the emp from collection  employees
+app.post("/emp_delete", function (req, res) {
+    empCol.remove({
+        empid: req.body.empid
+    }).then(function (result) {
+        res.send(result);
+    }).catch(function () {
+        res.send({
+            err: "error"
+        });
+    });
+
+});
+
+//search the record in employees
+app.post("/emp_search", function (req, res) {
+    console.log("aanka");
+    empCol.findOne({
+            empid: req.body.empid
+        })
+        .then(function (result) {
+            res.send(result);
+        })
+        .catch(function (msg) {
+            res.send({
+                err: msg
+            });
+        });
+});
+
+//update the records in employees
+app.post("/emp_update", function (req, resp) {
+    empCol.findOneAndUpdate({
+        empid: req.body.empid
+    }, {
+        $set: {
+            empname: req.body.empname,
+            fathername: req.body.fathername,
+            dob: req.body.dob,
+            email: req.body.email,
+            empdsg: req.body.empdsg,
+            doj: req.body.doj,
+            supname: req.body.supname,
+            dept: req.body.dept,
+            septcode: req.body.septcode,
+            empsalary: req.body.empsalary
+        }
+    }, {
+        new: true
+    }).then((docs) => {
+        if (docs) {
+            resp.send({
+                success: true,
+                data: docs
+            });
+        } else {
+            resp.send({
+                success: false,
+                data: "no such user exist"
+            });
+        }
+    })
+
 });
 
 //show all the new employee to the company
@@ -315,6 +382,51 @@ app.get("/partialaccept_emp_assestreqest", function (req, resp) {
         $set: {
             status: 4,
             assestacceptrequestlist: req.query.assestacceptrequestlist
+        }
+    }, {
+        new: true
+    }).then((docs) => {
+        if (docs) {
+            resp.send({
+                success: true,
+                data: docs
+            });
+        } else {
+            resp.send({
+                success: false,
+                data: "no such user exist"
+            });
+        }
+    })
+
+});
+
+//list all the employee in the company
+app.get("/listemp", (req, res) => {
+    empCol.find({
+            status: {
+                $ne: 5
+            }
+        })
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (msg) {
+            res.json({
+                err: msg
+            });
+        });
+});
+
+//partial accept the employee  assest item requested 
+app.get("/leaveemp", function (req, resp) {
+    console.log("dcknkd");
+    empCol.findOneAndUpdate({
+        empid: req.query.empid
+    }, {
+        $set: {
+            status: 5,
+            assestsubmitback: req.query.assestlist
         }
     }, {
         new: true

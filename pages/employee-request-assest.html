@@ -5,6 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory</title>
+    <script>
+        function addtoassestlist() {
+            document.getElementById("assestrequestlist").value += "," + document.getElementById("assestlist").value;
+            if (document.getElementById("assestrequestlist").value[0] == ',')
+                document.getElementById("assestrequestlist").value = document.getElementById("assestrequestlist").value
+                .substring(1);
+
+        }
+    </script>
+
 
 </head>
 
@@ -13,7 +23,16 @@
     <h1>employee can request assest from company</h1>
     <form method="POST" action="/emp/emp_request_assest">
         <input type="text" name="empid" placeholder="emp id">
-        <textarea name="assestrequestlist" placeholder="assest here"></textarea>
+        <select id="assestlist" Size="7" ondblclick="addtoassestlist();">
+            <option value="laptop">laptop</option>
+            <option value="dektop">dektop</option>
+            <option value="mobile">mobile</option>
+            <option value="charger">charger</option>
+            <option value="car">car</option>
+            <option value="hard disk">hard disk</option>
+            <option value="pen drive">pen drive</option>
+        </select>
+        <textarea name="assestrequestlist" placeholder="assest here" id="assestrequestlist"></textarea>
         <input type="submit" value="send">
     </form>
 </body>
