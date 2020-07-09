@@ -420,7 +420,16 @@ app.get("/listemp", (req, res) => {
 
 //partial accept the employee  assest item requested 
 app.get("/leaveemp", function (req, resp) {
-    console.log("dcknkd");
+    // var mailOptions = {
+    //     from: 'xxxxxxxxx',
+    //     to: req.query.empemail,
+    //     subject: "Assest collection",
+    //     text: "you have to submit the following assests " + req.query.assestlist
+    // }
+    // transpoter.sendMail(mailOptions, function (error, info) {
+    //     if (error) console.log(error);
+    //     else console.log('email sent: ' + info.response);
+    // });
     empCol.findOneAndUpdate({
         empid: req.query.empid
     }, {

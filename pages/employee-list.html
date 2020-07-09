@@ -24,10 +24,11 @@
                 // alert(res.data);
             }
 
-            $scope.leave = function (uid, assestlist) {
+            $scope.leave = function (uid, assestlist, empemail) {
                 alert(uid);
                 alert(assestlist);
-                $http.get("/emp/leaveemp?empid=" + uid + "&assestlist=" + assestlist).then(onResult,
+                $http.get("/emp/leaveemp?empid=" + uid + "&assestlist=" + assestlist + "&empemail=" +
+                    empemail).then(onResult,
                     onFail);
 
                 function onResult(res) {
@@ -84,7 +85,8 @@
                     <td scope="row">{{obj.assestrequestlist}}</td>
                     <td scope="row">{{obj.assestacceptrequestlist}}</td>
                     <td scope="row">
-                        <div class="btn btn-primary" ng-click="leave(obj.empid,obj.assestacceptrequestlist);">Leave
+                        <div class="btn btn-primary" ng-click="leave(obj.empid,obj.assestacceptrequestlist,obj.email);">
+                            Leave
                         </div>
                     </td>
                 </tr>
