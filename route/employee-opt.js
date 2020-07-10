@@ -50,7 +50,11 @@ var nameSchema = new mongoose.Schema({
     assestacceptlist: String,
     assestrequestlist: String,
     assestacceptrequestlist: String,
-    assestsubmitback: String
+    assestsubmitback: String,
+    assestdonatelist: String,
+    donarname: String,
+    empleftassest: String
+
 });
 
 nameSchema.set('versionKey', false);
@@ -66,6 +70,9 @@ app.post("/insert_emp", (req, res) => {
     req.body['assestacceptlist'] = null;
     req.body['assestrequestlist'] = null;
     req.body['assestsubmitback'] = null;
+    req.body['assestdonatelist'] = null;
+    req.body['donarname'] = null;
+    req.body['empleftassest'] = null;
     var empData = new empCol(req.body);
 
     empData.save()
@@ -436,6 +443,54 @@ app.get("/leaveemp", function (req, resp) {
         $set: {
             status: 5,
             assestsubmitback: req.query.assestlist
+        }
+    }, {
+        new: true
+    }).then((docs) => {
+        if (docs) {
+            resp.send({
+                success: true,
+                data: docs
+            });
+        } else {
+            resp.send({
+                success: false,
+                data: "no such user exist"
+            });
+        }
+    })
+
+});
+
+//fetch assests recotds in the emp collections
+app.get("/fetchassest", (req, res) => {
+    console.log(req.query.empid);
+    empCol.findOne({
+            empid: req.query.empid
+        })
+        .then(function (result) {
+            res.send(result);
+        })
+        .catch(function (msg) {
+            res.send({
+                err: msg
+            });
+        });
+});
+
+//donate the assest to the any other employee
+app.get("/donateassest", function (req, resp) {
+    console.log(req.query.empid);
+    console.log(req.query.assestdonatelist);
+    console.log(req.query.donarname);
+    console.log(req.query.empleftassest);
+    empCol.findOneAndUpdate({
+        empid: req.query.empid
+    }, {
+        $set: {
+            assestdonatelist: req.query.assestdonatelist,
+            donarname: req.query.donarname,
+            empleftassest: req.query.empleftassest,
         }
     }, {
         new: true

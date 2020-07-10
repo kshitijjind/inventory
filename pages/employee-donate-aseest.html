@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="jquery.js"></script>
+    <script src="bootstrap.js"></script>
+    <script src="angular.min.js"></script>
+    <script>
+        function addtoassestlist() {
+            document.getElementById("assestdonatelist").value += "," + document.getElementById("assestlist").value;
+            if (document.getElementById("assestdonatelist").value[0] == ',')
+                document.getElementById("assestdonatelist").value = document.getElementById("assestdonatelist").value
+                .substring(1);
+
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#fetchassest").click(function () {
+                var empid = $("#empid").val();
+                alert(empid);
+                $.ajax({
+                    type: "GET",
+                    url: "emp/fetchassest?empid=" + empid,
+                    dataType: "json",
+                    success: function (resp) {
+                        var assest = resp.assestacceptrequestlist.split(',');
+                        for (var i = 0; i < assest.length; i++) {
+                            $('#assestlist').append(`<option value="${assest[i]}"> 
+                                       ${assest[i]} 
+                                  </option>`);
+                        }
+                    },
+                    error: function (e) {
+                        alert('error', e);
+                    }
+                });
+            })
+
+            $("#donate").click(function () {
+                var empid = $("#empid").val();
+                var assestlist = $("#assestdonatelist").val();
+                var donarname = $("#donarname").val();
+                var assestflag = assestlist.split(",");
+                var assestleftemp = []
+                $('#assestlist option').each(function () {
+                    if (assestlist.indexOf($(this).val()) == -1) {
+                        assestleftemp.push($(this).val());
+                    }
+
+
+
+                });
+                alert(assestleftemp);
+
+                $.ajax({
+                    type: "GET",
+                    url: "emp/donateassest?empid=" + empid + "&assestdonatelist=" +
+                        assestlist + "&donarname=" + donarname + "&empleftassest=" +
+                        assestleftemp,
+                    dataType: "json",
+                    success: function (resp) {
+
+                    },
+                    error: function (e) {
+                        alert('error', e);
+                    }
+                });
+            })
+        })
+    </script>
+    <title>Document</title>
+</head>
+
+<body>
+    <center>
+        <input type="text" id="empid" placeholder="employee id">
+        <button id="fetchassest">fetch records</button><br><br>
+        choice assets to donate<select id="assestlist" size=7 ondblclick="addtoassestlist();"
+            style="width:200px"></select>
+        <textarea placeholder="assest here" id="assestdonatelist"></textarea><br><br>
+        <input type="text" placeholder="donor name" id="donarname">
+        <button id="donate">donate</button><br><br>
+
+
+    </center>
+</body>
+
+</html>
