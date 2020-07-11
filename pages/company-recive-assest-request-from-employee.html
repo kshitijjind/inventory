@@ -39,6 +39,20 @@
                 function onFail(res) {
                     alert(res.data);
                 }
+
+                $http.get("/assest/accept_upadate?assestacceptrequestlist=" +
+                    assestacceptrequestlist).then(
+                    onResult,
+                    onFail);
+
+                function onResult(res) {
+                    alert(res);
+                }
+
+                function onFail(res) {
+                    alert(res.data);
+                }
+
             }
 
             $scope.reject = function (uid) {

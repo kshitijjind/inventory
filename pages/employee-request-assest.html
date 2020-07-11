@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory</title>
+    <script src="jquery.js"></script>
+    <script src="bootstrap.js"></script>
+    <script src="angular.min.js"></script>
     <script>
         function addtoassestlist() {
             document.getElementById("assestrequestlist").value += "," + document.getElementById("assestlist").value;
@@ -14,6 +17,26 @@
 
         }
     </script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "assest/showassest",
+                dataType: "json",
+                success: function (resp) {
+                    for (var i = 0; i < resp.length; i++) {
+                        $('#assestlist').append(`<option value="${resp[i]}"> 
+                                       ${resp[i]} 
+                                  </option>`);
+                    }
+                },
+                error: function (e) {
+                    alert('error', e);
+                }
+            });
+        });
+    </script>
+
 
 
 </head>
@@ -24,13 +47,6 @@
     <form method="POST" action="/emp/emp_request_assest">
         <input type="text" name="empid" placeholder="emp id">
         <select id="assestlist" Size="7" ondblclick="addtoassestlist();">
-            <option value="laptop">laptop</option>
-            <option value="dektop">dektop</option>
-            <option value="mobile">mobile</option>
-            <option value="charger">charger</option>
-            <option value="car">car</option>
-            <option value="hard disk">hard disk</option>
-            <option value="pen drive">pen drive</option>
         </select>
         <textarea name="assestrequestlist" placeholder="assest here" id="assestrequestlist"></textarea>
         <input type="submit" value="send">

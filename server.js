@@ -31,6 +31,9 @@ app.use("/recipt", recipt);
 var invoice = require("./route/invoice");
 app.use("/invoice", invoice);
 
+var assest = require("./route/assest-opt");
+app.use("/assest", assest);
+
 app.use(express.static("pages")); //imp line for .html
 
 app.use("/", (req, res) => {
