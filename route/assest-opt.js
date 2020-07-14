@@ -24,7 +24,9 @@ mongoose.connect("mongodb://localhost:27017/inventory", {
 //collection schema
 var nameSchema = new mongoose.Schema({
     assestid: String,
-    assestname: String
+    assestname: String,
+    empid: String,
+    status: String
 });
 
 nameSchema.set('versionKey', false);
@@ -33,6 +35,8 @@ var assestCol = mongoose.model("assest", nameSchema); //collection
 
 //insert the assest in collection
 app.post("/insert_assest", (req, res) => {
+    req.body['empid'] = null;
+    req.body['status'] = 0;
     var assestData = new assestCol(req.body);
     assestData.save()
         .then(item => {
@@ -46,7 +50,9 @@ app.post("/insert_assest", (req, res) => {
 
 //fetch assests from assest collection
 app.get("/showassest", (req, res) => {
-    assestCol.find()
+    assestCol.find({
+            status: 0
+        })
         .then(function (result) {
             var assestdis = [];
             for (var i = 0; i < result.length; i++) {
@@ -68,13 +74,61 @@ app.get("/accept_upadate", function (req, res) {
     var alist = req.query.assestacceptrequestlist.split(',');
     console.log(alist.length);
     for (let i = 0; i < alist.length; i++) {
-        assestCol.deleteOne({
+        assestCol.findOneAndUpdate({
             assestname: alist[i]
+        }, {
+            $set: {
+                status: 1,
+                empid: req.query.empid,
+            }
+        }, {
+            new: true
         }).then(function (result) {}).catch(function () {
 
         });
     }
 
+});
+
+//update the assest collection when emp donate its assest to the some othef emp
+app.get("/updatedonar_whendonate", function (req, res) {
+    console.log(req.query.empid);
+    console.log(req.query.assestdonatelist);
+    console.log(req.query.donarid);
+    var donarlist = req.query.assestdonatelist.split(',');
+    console.log(donarlist.length);
+    for (let i = 0; i < donarlist.length; i++) {
+        assestCol.findOneAndUpdate({
+            $and: [{
+                assestname: donarlist[i],
+                empid: req.query.empid
+            }]
+        }, {
+            $set: {
+                status: 2,
+                empid: req.query.donarid,
+            }
+        }, {
+            new: true
+        }).then(function (result) {}).catch(function () {
+
+        });
+    }
+
+});
+
+//show all assest
+//fetch assests from assest collection
+app.get("/showallassest", (req, res) => {
+    assestCol.find()
+        .then(function (result) {
+            res.send(result);
+        })
+        .catch(function (msg) {
+            res.send({
+                err: msg
+            });
+        });
 });
 
 module.exports = app;

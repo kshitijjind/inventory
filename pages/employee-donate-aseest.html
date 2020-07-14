@@ -43,6 +43,7 @@
                 var empid = $("#empid").val();
                 var assestlist = $("#assestdonatelist").val();
                 var donarname = $("#donarname").val();
+                var donarid = $("#donarid").val();
                 var assestflag = assestlist.split(",");
                 var assestleftemp = []
                 $('#assestlist option').each(function () {
@@ -68,6 +69,19 @@
                         alert('error', e);
                     }
                 });
+
+                $.ajax({
+                    type: "GET",
+                    url: "assest/updatedonar_whendonate?empid=" + empid + "&assestdonatelist=" +
+                        assestlist + "&donarid=" + donarid,
+                    dataType: "json",
+                    success: function (resp) {
+
+                    },
+                    error: function (e) {
+                        alert('error', e);
+                    }
+                });
             })
         })
     </script>
@@ -76,11 +90,13 @@
 
 <body>
     <center>
+        <h2>emp can tranfer assest to some other em[p</h2>
         <input type="text" id="empid" placeholder="employee id">
         <button id="fetchassest">fetch records</button><br><br>
         choice assets to donate<select id="assestlist" size=7 ondblclick="addtoassestlist();"
             style="width:200px"></select>
         <textarea placeholder="assest here" id="assestdonatelist"></textarea><br><br>
+        <input type="text" placeholder="donor id" id="donarid">
         <input type="text" placeholder="donor name" id="donarname">
         <button id="donate">donate</button><br><br>
 
