@@ -40,7 +40,7 @@
                     alert(res.data);
                 }
 
-                $http.get("/assest/accept_upadate?assestacceptrequestlist=" +
+                $http.get("/assest/accept_update?assestacceptrequestlist=" +
                     assestacceptrequestlist + "&empid=" + empid).then(
                     onResult,
                     onFail);

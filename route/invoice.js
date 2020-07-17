@@ -83,7 +83,19 @@ app.get("/genrateinvoice", (req, res) => {
         });
 });
 
+//show all the delived products
+app.get("/show_delived_product", (req, res) => {
+    invoiceCol.find()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (msg) {
+            res.json({
+                err: msg
+            });
+        });
 
+});
 
 
 module.exports = app;

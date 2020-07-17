@@ -69,7 +69,7 @@ app.get("/showassest", (req, res) => {
 });
 
 //update the assest collection with respect to accept the request
-app.get("/accept_upadate", function (req, res) {
+app.get("/accept_update", function (req, res) {
     console.log(req.query.assestacceptrequestlist);
     var alist = req.query.assestacceptrequestlist.split(',');
     console.log(alist.length);
@@ -90,7 +90,7 @@ app.get("/accept_upadate", function (req, res) {
 
 });
 
-//update the assest collection when emp donate its assest to the some othef emp
+//update the assest collection when emp donate its assest to the some other emp
 app.get("/updatedonar_whendonate", function (req, res) {
     console.log(req.query.empid);
     console.log(req.query.assestdonatelist);

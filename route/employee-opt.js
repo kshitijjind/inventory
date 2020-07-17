@@ -101,7 +101,6 @@ app.post("/emp_delete", function (req, res) {
 
 //search the record in employees
 app.post("/emp_search", function (req, res) {
-    console.log("aanka");
     empCol.findOne({
             empid: req.body.empid
         })

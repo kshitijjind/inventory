@@ -14,7 +14,6 @@ app.use("/index", insert_products);
 var insert_orders = require("./route/place-order");
 app.use("/order", insert_orders);
 
-require('./route/payment')(app)
 
 var customer_orders = require("./route/customer-order");
 app.use("/custorder", customer_orders);
@@ -33,6 +32,9 @@ app.use("/invoice", invoice);
 
 var assest = require("./route/assest-opt");
 app.use("/assest", assest);
+
+var user = require("./route/user-login");
+app.use("/user", user);
 
 app.use(express.static("pages")); //imp line for .html
 
