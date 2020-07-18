@@ -68,7 +68,6 @@ app.post("/check_user", function (req, res) {
                 res.redirect("/assest-ui.html")
             else if (result.designation == "warehousemanager")
                 res.redirect("/warehouse-ui.html")
-
         })
         .catch(function (msg) {
             res.send({

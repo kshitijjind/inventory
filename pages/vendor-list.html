@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrapcss.css">
+    <script src="jquery.js"></script>
+    <script src="bootstrap.js"></script>
+    <script src="angular.min.js"></script>
+
+    <script>
+        var module = angular.module("mymodule", []);
+        module.controller("mycontroller", function ($scope, $http) {
+
+            $http.get("/vendor/showallvendor").then(onResult, onFail);
+
+            function onResult(res) {
+                $scope.jsonArry = res.data;
+                $scope.x = $scope.jsonArry[1];
+            }
+
+            function onFail(res) {
+                alert(res.data);
+            }
+
+
+
+
+        });
+    </script>
+
+</head>
+
+<body ng-app="mymodule" ng-controller="mycontroller">
+    <center>
+        <h1>track vendor</h1>
+        search with assestid- <input type="text" ng-model="namefilter.vendorname"
+            style="width:500px;margin-left: 15px;"><br><br>
+    </center>
+    <div class="container bg-white mt-5" style="width:1000%">
+        <table class="table table-striped table-active table-responsive-md"
+            style="color:black;width:80%;margin-left:-100px">
+            <thead>
+                <tr>
+                    <th scope="col">vendor id</th>
+                    <th scope="col">vendor name</th>
+                    <th scope="col">contact</th>
+                    <th scope="col">country</th>
+                    <th scope="col">state</th>
+                    <th scope="col">city</th>
+                    <th scope="col">address</th>
+
+
+                </tr>
+                <tr ng-repeat="obj in jsonArry | filter:namefilter">
+                    <td scope="row">{{obj.vendorid}}</td>
+                    <td scope="row">{{obj.vendorname}}</td>
+                    <td scope="row">{{obj.contact}}</td>
+                    <td scope="row">{{obj.country}}</td>
+                    <td scope="row">{{obj.state}}</td>
+                    <td scope="row">{{obj.city}}</td>
+                    <td scope="row">{{obj.address}}</td>
+
+
+
+
+            </thead>
+        </table>
+    </div>
+
+</body>
+
+</html>

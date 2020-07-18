@@ -36,6 +36,9 @@ app.use("/assest", assest);
 var user = require("./route/user-login");
 app.use("/user", user);
 
+var vendor = require("./route/vendor-opt");
+app.use("/vendor", vendor);
+
 app.use(express.static("pages")); //imp line for .html
 
 app.use("/", (req, res) => {

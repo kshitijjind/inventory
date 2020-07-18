@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory</title>
+</head>
+
+<body>
+    <h1>Perform opertaions on vendor</h1>
+    <form method="POST" action="/vendor/insert_vendor">
+        <input type="text" name="vendorid" placeholder="Vendor ID">
+        <input type="text" name="vendorname" placeholder="vendor Name">
+        <input type="text" name="contact" placeholder="contact">
+        <input type="text" name="country" placeholder="country">
+        <input type="text" name="state" placeholder="state">
+        <input type="text" name="city" placeholder="city">
+        <input type="text" name="address" placeholder="address">
+        <input type="submit" value="Insert">
+        <input type="submit" value="Delete" formaction="/vendor/vendor_delete">
+        <input type="submit" value="Update" formaction="/vendor/vendor_update">
+        <input type="submit" value="Search" formaction="/vendor/vendor_search">
+    </form>
+</body>
+<script src="../route/index-mongo.js"></script>
+
+</html>

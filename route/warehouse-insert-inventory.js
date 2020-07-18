@@ -36,6 +36,7 @@ mongoose.connect("mongodb://localhost:27017/inventory", {
 
 //collection schema
 var nameSchema = new mongoose.Schema({
+    vendorid: String,
     itemid: String,
     name: String,
     qty: Number,
