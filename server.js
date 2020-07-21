@@ -39,6 +39,9 @@ app.use("/user", user);
 var vendor = require("./route/vendor-opt");
 app.use("/vendor", vendor);
 
+var bill = require("./route/bill");
+app.use("/bill", bill);
+
 app.use(express.static("pages")); //imp line for .html
 
 app.use("/", (req, res) => {

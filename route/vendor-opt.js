@@ -40,6 +40,12 @@ var vendorCol = mongoose.model("vendor", nameSchema); //collection
 
 //insert the vendor in the collection
 app.post("/insert_vendor", (req, res) => {
+    var digits = '0123456789';
+    let rid = '';
+    for (let i = 0; i < 4; i++) {
+        rid += digits[Math.floor(Math.random() * 10)];
+    }
+    req.body["vendorid"] = rid;
     var vendorData = new vendorCol(req.body);
 
     vendorData.save()

@@ -41,6 +41,7 @@ var nameSchema = new mongoose.Schema({
     name: String,
     qty: Number,
     price: String,
+    specs: String,
     qrcodeUrl: String
 });
 
