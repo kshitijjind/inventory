@@ -5,10 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>inventory</title>
+    <script>
+        if (sessionStorage.getItem("username") != "superadmin")
+            location.href = "/user-login.html";
+    </script>
 </head>
+
 
 <body>
     <h3>Menu</h3>
+
     <a href="create-user.html">
         <h2>1. Create Users</h2>
     </a>
@@ -83,5 +89,6 @@
         <p>19. Employee leave or fire from company</p>
     </a>
 </body>
+
 
 </html>

@@ -5,18 +5,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory</title>
+    <script src="jquery.js"></script>
+    <script src="bootstrap.js"></script>
+    <script src="angular.min.js"></script>
+    <script src="cookie.js"></script>
     <script>
+        $(document).ready(function () {
+            $("#login").click(function () {
+                var uname = $("#username").val();
+                var pass = $("#password").val();
+                var url;
+                $.ajax({
+                    type: "POST",
+                    url: "user/check_user?uname=" + uname + "&pass=" + pass,
+                    dataType: "json",
+                    success: function (resp) {
+                        sessionStorage.setItem("username", resp.username);
+                        if (resp.designation == "warehousemanager") {
+                            location.href = "/warehouse-ui.html"
+                        } else if (resp.designation == "shopkepper") {
+                            location.href = "/shopkepper-ui.html"
+                        } else if (resp.designation == "superadmin") {
+                            location.href = "/superadmin-ui.html"
+                        }
 
+                    },
+                    error: function (e) {
+                        alert('error', e);
+                    }
+                });
+            });
+
+        });
     </script>
 </head>
 
 <body>
     <h1>Anyone can login from this portal</h1>
-    <form method="POST" action="/user/check_user">
-        <input type="text" name="username" placeholder="username">
-        <input type="text" name="password" placeholder="password">
-        <input type="submit" value="submit">
-    </form>
+    <input type="text" id="username" placeholder="username">
+    <input type="text" id="password" placeholder="password">
+    <button id="login">login</button><br><br>
 </body>
 
 </html>

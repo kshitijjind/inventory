@@ -5,11 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>inventory</title>
+    <script>
+        if (sessionStorage.getItem("username") != "shopkepper")
+            location.href = "/user-login.html";
+    </script>
 </head>
 
 <body>
     <h3>Menu</h3>
     <h1>Shop Operations</h1>
+    <input type="text" id="textuser" readonly>
+
     <a href="accepted-orders.html">
         <p>1. show order status</p>
     </a>
@@ -21,5 +27,8 @@
     </a>
 
 </body>
+<script>
+    document.getElementById("textuser").value = sessionStorage.getItem("username");
+</script>
 
 </html>

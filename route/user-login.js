@@ -52,22 +52,14 @@ app.post("/create_user", (req, res) => {
 app.post("/check_user", function (req, res) {
     userCol.findOne({
             $and: [{
-                username: req.body.username,
-                password: req.body.password
+                username: req.query.uname,
+                password: req.query.pass
             }]
         })
         .then(function (result) {
             console.log(result.designation);
-            if (result.designation == "shopkepper")
-                res.redirect("/shopkepper-ui.html")
-            else if (result.designation == "superadmin")
-                res.redirect("/superadmin-ui.html")
-            else if (result.designation == "employee")
-                res.redirect("/employee-ui.html")
-            else if (result.designation == "assestmanager")
-                res.redirect("/assest-ui.html")
-            else if (result.designation == "warehousemanager")
-                res.redirect("/warehouse-ui.html")
+            console.log(result);
+            res.send(result);
         })
         .catch(function (msg) {
             res.send({
